@@ -1,51 +1,17 @@
-name: CI for Web Files
+name: Simple PR Check
 
 on:
   pull_request:
     branches:
-      - main # Chạy action khi có PR merge vào nhánh main
-    paths:
-      - '**.html' # Chỉ chạy khi có thay đổi trong file HTML
-      - '**.css'  # Chỉ chạy khi có thay đổi trong file CSS
-      - '**.js'   # Chỉ chạy khi có thay đổi trong file JS
+      - main # Chạy khi có PR vào nhánh 'main'
 
 jobs:
-  lint-and-test:
-    runs-on: ubuntu-latest # Chạy trên môi trường Ubuntu mới nhất
+  greet:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # Bước này kéo mã nguồn về môi trường chạy action
+        uses: actions/checkout@v4 # Kéo mã nguồn về
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18' # Sử dụng Node.js version 18 để chạy các công cụ JS
-
-      - name: Install dependencies (if any)
-        run: npm install # Nếu bạn có package.json, chạy lệnh này để cài đặt dependencies
-
-      - name: Run HTML linting (e.g., html-linter)
-        run: |
-          npm install -g html-linter # Cài đặt công cụ lint HTML
-          html-linter index.html || true # Chạy lint, '|| true' để không fail build nếu có cảnh báo
-
-      - name: Run CSS linting (e.g., stylelint)
-        run: |
-          npm install -g stylelint stylelint-config-standard # Cài đặt Stylelint
-          stylelint '**.css' # Chạy lint CSS trên tất cả các file .css
-
-      - name: Run JavaScript linting (e.g., ESLint)
-        run: |
-          npm install -g eslint # Cài đặt ESLint
-          eslint '**.js' # Chạy lint JS trên tất cả các file .js
-
-      - name: Run JavaScript tests (if any)
-        run: npm test # Chạy các bài kiểm tra JS của bạn (nếu có)
-        continue-on-error: true # Cho phép action tiếp tục ngay cả khi có lỗi test (tùy chọn)
-
-      - name: Check for missing files
-        run: |
-          # Ví dụ: Kiểm tra xem index.html có tồn tại không
-          test -f index.html || { echo "index.html is missing!"; exit 1; }
-          # Thêm các kiểm tra file khác nếu cần
+      - name: Say Hello
+        run: echo "Hello! This GitHub Action is running for your Pull Request!"
